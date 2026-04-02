@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veteranos Tech — Simulador de Escalonamento</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/simulador-escalonamento.css">
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <div class="logo-wrap">
+        <img src="assets/logo.jpg" alt="Veteranos Tech">
+      </div>
+      <div class="header-text">
+        <h1>VETERANOS <span>TECH</span></h1>
+        <p>Simulador de Escalonamento de SO &mdash; Robô Seguidor de Linha</p>
+      </div>
+      <div class="header-status">
+        <div class="status-dot">SISTEMA ONLINE</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:4px;" id="clock">--:--:--</div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="panel">
+        <div class="panel-title">Algoritmo de Escalonamento</div>
+        <div class="algo-btns">
+          <button class="algo-btn active" data-algo="rr" onclick="selectAlgo('rr',this)">Round-Robin <span class="badge">RODÍZIO</span></button>
+          <button class="algo-btn" data-algo="priority" onclick="selectAlgo('priority',this)">Por Prioridade <span class="badge">ESTÁTICO</span></button>
+          <button class="algo-btn" data-algo="preemptive" onclick="selectAlgo('preemptive',this)">Preemptivo <span class="badge">INTERRUPÇÃO</span></button>
+        </div>
+        <div class="quantum-row" id="quantum-row">
+          <label>QUANTUM</label>
+          <input type="range" min="1" max="10" value="3" id="quantum-slider" oninput="document.getElementById('qval').textContent=this.value+'ms'">
+          <span class="quantum-val" id="qval">3ms</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">Controle da Simulação</div>
+        <div class="sim-btns">
+          <button class="btn-primary" id="btn-start" onclick="startSim()">▶ INICIAR</button>
+          <button class="btn-sec" id="btn-reset" onclick="resetSim()">↺ RESETAR</button>
+        </div>
+        <div class="speed-row" style="margin-top:14px;">
+          <label>VELOCIDADE</label>
+          <input type="range" min="1" max="5" value="3" id="speed-slider" oninput="updateSpeed(this.value)">
+          <span style="font-family:'Orbitron',monospace;font-size:12px;color:var(--cyan);min-width:24px" id="speed-val">3x</span>
+        </div>
+        <div style="margin-top:14px;">
+          <button class="btn-sec" style="width:100%;font-size:10px" onclick="triggerInterrupt()" id="btn-interrupt">
+            ⚡ SIMULAR OBSTÁCULO (INTERRUPÇÃO)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-card"><div class="metric-label">Tempo de CPU</div><div class="metric-value" id="m-cpu">0</div><div class="metric-unit">ms simulados</div></div>
+      <div class="metric-card"><div class="metric-label">Trocas de contexto</div><div class="metric-value" id="m-ctx">0</div><div class="metric-unit">context switches</div></div>
+      <div class="metric-card"><div class="metric-label">Espera média</div><div class="metric-value" id="m-wait">0</div><div class="metric-unit">ms por processo</div></div>
+    </div>
+
+    <div class="processes-grid" id="proc-grid"></div>
+
+    <div class="panel timeline-panel">
+      <div class="panel-title">Linha do Tempo — CPU Gantt</div>
+      <canvas id="timeline-canvas"></canvas>
+      <div class="timeline-legend" id="legend"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Log do Escalonador</div>
+      <div class="log-panel"><div id="log-output"></div></div>
+    </div>
+
+  </div>
+  <script src="scripts/simulador-escalonamento.js"></script>
+</body>
+</html>
