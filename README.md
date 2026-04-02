@@ -1,59 +1,7 @@
-# 🦁 Veteranos Tech — Simulador de Escalonamento de SO
-
-**Projeto ADS — Análise e Desenvolvimento de Sistemas**  
-Anhanguera | 3º Semestre  
-Equipe: Veteranos Tech
-
----
-
-## 📋 Sobre o projeto
-
-Simulador visual de algoritmos de escalonamento de processos aplicado ao contexto de um **robô seguidor de linha**.  
-Cada tarefa do robô (sensor IR, controle de motor, telemetria, detecção de obstáculo) é modelada como um processo de SO, permitindo comparar algoritmos antes de gravar o firmware no Arduino.
-
----
-
-## ⚙️ Algoritmos implementados
-
-| Algoritmo | Descrição |
-|---|---|
-| **Round-Robin** | Cada processo recebe um quantum fixo de tempo em rodízio |
-| **Por Prioridade** | Processos de maior prioridade sempre executam primeiro |
-| **Preemptivo** | Alta prioridade interrompe imediatamente o processo atual |
-
----
-
-## 🚀 Como usar
-
-1. Acesse o simulador pelo link do GitHub Pages abaixo
-2. Selecione o algoritmo desejado
-3. Ajuste o quantum (Round-Robin) ou a velocidade
-4. Clique em **▶ INICIAR**
-5. Use **⚡ SIMULAR OBSTÁCULO** para ver preempção em ação
-
----
-
-## 🗂️ Estrutura do projeto
-
-```
-veteranos-tech-simulator/
-├── index.html                          # Página principal
-├── assets/
-│   └── logo.jpg                        # Logo Veteranos Tech
-├── styles/
-│   └── simulador-escalonamento.css     # Estilos do dashboard
-├── scripts/
-│   └── simulador-escalonamento.js      # Lógica dos algoritmos
-└── README.md
-```
-
----
-
-## 🔗 Matérias relacionadas
-
-- **Sistemas Operacionais** — escalonamento, preempção, context switch, starvation
-- **Desenvolvimento JavaScript** — DOM, Canvas API, Web Serial API (fase 2)
-
----
-
-*Veteranos Tech © 2025 — Anhanguera*
+Um robô seguidor de linha parece simples por fora — ele segue uma fita branca no chão. Por dentro, ele é um sistema de tempo real gerenciando múltiplas tarefas simultaneamente: leitura de sensor IR, controle de motores, envio de telemetria e detecção de obstáculos. Com um único processador, alguém precisa decidir quem roda quando. Esse alguém é o escalonador — e é exatamente o que um Sistema Operacional faz.
+Este simulador traduz essa realidade para o navegador. Cada tarefa do robô vira um processo. Cada algoritmo de escalonamento mostra um comportamento diferente na linha do tempo. A pergunta que o simulador responde é direta: qual algoritmo deixa o robô reagir mais rápido quando sai da linha?
+Round-Robin trata todos os processos como iguais — cada um recebe uma fatia de tempo em rodízio. Justo, mas perigoso para tempo real: o sensor IR pode esperar três turnos completos para reagir enquanto o robô já desviou da pista.
+Por Prioridade respeita a urgência de cada tarefa — o sensor sempre entra na frente. Mas se os dados chegarem sem parar, a telemetria nunca roda. É o starvation acontecendo na prática, visível no Gantt.
+Preemptivo é o que um SO moderno usa em sistemas críticos — prioridade absoluta com interrupção imediata. Quando o sensor detecta um obstáculo, ele para qualquer processo em execução na hora e assume a CPU. É o mesmo mecanismo que o Linux usa para tratar interrupções de hardware. E é o algoritmo que será gravado no firmware do Arduino.
+A camada de JavaScript não é decoração — ela é o sistema nervoso do projeto. O Gantt é desenhado em tempo real via Canvas API. Os processos são gerenciados com estado reativo. A Web Serial API (fase 2) vai conectar o navegador diretamente à porta USB do Arduino, transformando o simulador em um monitor de telemetria real durante os testes de bancada — sem instalar nada além do Chrome.
+Entender Sistemas Operacionais não é só passar na matéria. É saber por que o seu robô perdeu a linha na curva.
